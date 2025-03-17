@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
   }
   .hero {
-    background-image: url('https://via.placeholder.com/1920x600.png?text=Hospital+Booking');
+    background-image: url('images/hero_img.jpg');
     background-size: cover;
     background-position: center;
     height: 400px;
