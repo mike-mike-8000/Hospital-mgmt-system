@@ -94,6 +94,15 @@
             border-left: 5px solid #4CAF50;
             margin-top: 10px;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label, select, input, button {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -151,16 +160,18 @@
             <h2>Book an Appointment</h2>
             <form>
                 <label for="department">Department:</label>
-                <select id="department">
-                    <option>General Physician</option>
-                    <option>Optician</option>
-                    <option>Dentist</option>
-                    <option>Cardiology</option>
-                    <option>Dermatology</option>
+                <select id="department" onchange="updateDoctors()">
+                    <option value="general">General Physician</option>
+                    <option value="optician">Optician</option>
+                    <option value="dentist">Dentist</option>
+                    <option value="cardiology">Cardiology</option>
+                    <option value="dermatology">Dermatology</option>
                 </select>
 
                 <label for="doctor">Doctor:</label>
-                <input type="text" id="doctor" placeholder="Enter Doctor Name">
+                <select id="doctor">
+                    <!-- Doctors will be populated based on department selection -->
+                </select>
 
                 <label for="date">Date:</label>
                 <input type="date" id="date">
@@ -191,7 +202,29 @@
                 section.classList.add("hidden");
             }
         }
+
+        function updateDoctors() {
+            var department = document.getElementById("department").value;
+            var doctorSelect = document.getElementById("doctor");
+            doctorSelect.innerHTML = ""; // Clear previous options
+
+            var doctors = {
+                general: ["Dr. Smith", "Dr. Johnson", "Dr. Lee", "Dr. Brown", "Dr. Davis"],
+                optician: ["Dr. Taylor", "Dr. Wilson", "Dr. Moore", "Dr. Clark", "Dr. Lewis"],
+                dentist: ["Dr. Walker", "Dr. Hall", "Dr. Allen", "Dr. Young", "Dr. Hernandez"],
+                cardiology: ["Dr. King", "Dr. Wright", "Dr. Lopez", "Dr. Hill", "Dr. Scott"],
+                dermatology: ["Dr. Green", "Dr. Adams", "Dr. Baker", "Dr. Gonzalez", "Dr. Nelson"]
+            };
+
+            doctors[department].forEach(function(doctor) {
+                var option = document.createElement("option");
+                option.value = doctor;
+                option.textContent = doctor;
+                doctorSelect.appendChild(option);
+            });
+        }
     </script>
 
 </body>
 </html>
+
