@@ -47,8 +47,19 @@
         <label for="phone" class="form-label">Phone Number</label>
         <input type="number" class="form-control" id="phone" required>
 
+        <label for="dob" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" id="dob" required>
+
         <label for="email" class="form-label">Specialty</label>
-        <input type="text" class="form-control" id="specialty" required>
+        <label for="specialty" class="form-label">Specialty</label>
+        <select class="form-select" id="specialty" required>
+          <option value="" disabled selected>Select a specialty</option>
+          <option value="General Physician">General Physician</option>
+          <option value="Pediatrician">Pediatrician</option>
+          <option value="Cardiologist">Cardiologist</option>
+          <option value="Dermatologist">Dentist</option>
+          <option value="Neurologist">Neurologist</option>
+        </select>
 
         <div class="mb-3">
         <label for="gender" class="form-label">Gender</label>

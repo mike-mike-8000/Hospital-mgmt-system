@@ -150,14 +150,15 @@
         <section id="book-appointment">
             <h2>Book an Appointment</h2>
             <form>
-                <label for="department">Department:</label>
-                <select id="department">
-                    <option>General Physician</option>
-                    <option>Optician</option>
-                    <option>Dentist</option>
-                    <option>Cardiology</option>
-                    <option>Dermatology</option>
-                </select>
+                <label for="specialty" class="form-label">Doctor Specialty</label>
+                    <select class="form-select" id="specialty" required>
+                        <option value="" disabled selected>Select a specialty</option>
+                        <option value="General Physician">General Physician</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                    </select>
 
                 <label for="doctor">Doctor:</label>
                 <input type="text" id="doctor" placeholder="Enter Doctor Name">
