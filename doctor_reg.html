@@ -33,37 +33,37 @@
 
   <div class="signup-container">
     <h2 class="text-center">Create an Account</h2>
-    <form>
+    <form action="doctor_signup.php" method="POST" onsubmit="return validatePassword();">
       <div class="mb-3">
         <label for="fname" class="form-label">First Name</label>
-        <input type="text" class="form-control" id="fname" required>
+        <input type="text" class="form-control" id="fname" name="fname" required>
 
         <label for="lname" class="form-label">Last Name</label>
-        <input type="text" class="form-control" id="lname" required>
+        <input type="text" class="form-control" id="lname" name="lname" required>
       
         <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" required>
+        <input type="email" class="form-control" id="email" name="email" required>
 
         <label for="phone" class="form-label">Phone Number</label>
-        <input type="number" class="form-control" id="phone" required>
+        <input type="number" class="form-control" id="phone" name="phone" required>
 
         <label for="dob" class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" id="dob" required>
+        <input type="date" class="form-control" id="dob" name="dob" required>
 
         <label for="email" class="form-label">Specialty</label>
         <label for="specialty" class="form-label">Specialty</label>
-        <select class="form-select" id="specialty" required>
+        <select class="form-select" id="specialty" name="specialty" required>
           <option value="" disabled selected>Select a specialty</option>
           <option value="General Physician">General Physician</option>
           <option value="Pediatrician">Pediatrician</option>
           <option value="Cardiologist">Cardiologist</option>
-          <option value="Dermatologist">Dentist</option>
+          <option value="Dentist">Dentist</option>
           <option value="Neurologist">Neurologist</option>
         </select>
 
         <div class="mb-3">
         <label for="gender" class="form-label">Gender</label>
-            <select class="form-select" id="gender" required>
+            <select class="form-select" id="gender" name="gender" required>
                 <option value="" disabled selected>Select your gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -72,16 +72,16 @@
         </div>
 
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" required>
+        <input type="password" class="form-control" id="password" name="password" required>
       
         <label for="confirm-password" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="confirm-password" required>
+        <input type="password" class="form-control" id="confirm-password" name="confirm-password" required>
         <div id="password-error" class="error-message">Passwords do not match!</div>
       </div>
 
       <button type="submit" class="btn btn-success w-100">Sign Up</button>
       <div class="mb-3 text-center">
-        <a href="login.html">Already have an account? Log in here</a>
+        <a href="doctor_login.html">Already have an account? Log in here</a>
       </div>
     </form>
   </div>
