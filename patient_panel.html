@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Panel - Hospital Booking</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -103,6 +104,27 @@
         label, select, input, button {
             margin-bottom: 10px;
         }
+
+        /* Custom styles for the time input dropdown */
+        select {
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        select#time {
+            width: 50%; /* Make it thinner */
+            font-size: 16px;
+            padding: 8px; /* Adjust padding for a better look */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 10; /* Ensure dropdown appears above other elements */
+            max-height: 200px; /* Limit height to ensure it doesn’t overflow the page */
+            overflow-y: auto; /* Allow scrolling if the dropdown exceeds max height */
+        }
     </style>
 </head>
 <body>
@@ -161,11 +183,12 @@
             <form>
                 <label for="department">Department:</label>
                 <select id="department" onchange="updateDoctors()">
-                    <option value="general">General Physician</option>
-                    <option value="optician">Optician</option>
-                    <option value="dentist">Dentist</option>
-                    <option value="cardiology">Cardiology</option>
-                    <option value="dermatology">Dermatology</option>
+                    <option value="" disabled selected>Select a specialty</option>
+                    <option value="General Physician">General Physician</option>
+                    <option value="Pediatrician">Pediatrician</option>
+                    <option value="Cardiologist">Cardiologist</option>
+                    <option value="Dentist">Dentist</option>
+                    <option value="Neurologist">Neurologist</option>
                 </select>
 
                 <label for="doctor">Doctor:</label>
@@ -174,10 +197,23 @@
                 </select>
 
                 <label for="date">Date:</label>
-                <input type="date" id="date">
+                <input type="text" id="date" required>
 
                 <label for="time">Time:</label>
-                <input type="time" id="time">
+                <select id="time" required>
+                    <option value="07:00">07:00 AM</option>
+                    <option value="08:00">08:00 AM</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="13:00">01:00 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                    <option value="18:00">06:00 PM</option>
+                </select>
 
                 <button type="submit">Book Now</button>
             </form>
@@ -193,6 +229,7 @@
     </main>
 
     <!-- JavaScript for Toggle Functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         function toggleVisibility(id) {
             var section = document.getElementById(id);
@@ -209,11 +246,11 @@
             doctorSelect.innerHTML = ""; // Clear previous options
 
             var doctors = {
-                general: ["Dr. Smith", "Dr. Johnson", "Dr. Lee", "Dr. Brown", "Dr. Davis"],
-                optician: ["Dr. Taylor", "Dr. Wilson", "Dr. Moore", "Dr. Clark", "Dr. Lewis"],
-                dentist: ["Dr. Walker", "Dr. Hall", "Dr. Allen", "Dr. Young", "Dr. Hernandez"],
-                cardiology: ["Dr. King", "Dr. Wright", "Dr. Lopez", "Dr. Hill", "Dr. Scott"],
-                dermatology: ["Dr. Green", "Dr. Adams", "Dr. Baker", "Dr. Gonzalez", "Dr. Nelson"]
+                "General Physician": ["Dr. Smith", "Dr. Johnson", "Dr. Lee", "Dr. Brown", "Dr. Davis"],
+                "Cardiologist": ["Dr. Taylor", "Dr. Wilson", "Dr. Moore", "Dr. Clark", "Dr. Lewis"],
+                "Pediatrician": ["Dr. Walker", "Dr. Hall", "Dr. Allen", "Dr. Young", "Dr. Hernandez"],
+                "Dentist": ["Dr. King", "Dr. Wright", "Dr. Lopez", "Dr. Hill", "Dr. Scott"],
+                "Neurologist": ["Dr. Green", "Dr. Adams", "Dr. Baker", "Dr. Gonzalez", "Dr. Nelson"]
             };
 
             doctors[department].forEach(function(doctor) {
@@ -223,8 +260,13 @@
                 doctorSelect.appendChild(option);
             });
         }
+
+        // Initialize Flatpickr for the date input
+        flatpickr("#date", {
+            minDate: "today",  // Disable past dates
+            dateFormat: "Y-m-d",  // Format for the date
+        });
     </script>
 
 </body>
 </html>
-
