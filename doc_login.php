@@ -16,10 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $doctor = $result->fetch_assoc();
         // Verify password
         if (password_verify($password, $doctor['password'])) {
-            // Redirect to panel
-            echo "<script>alert('Login successful!'); window.location.href='doctor_panel.html';</script>";
+            session_start();
+            $_SESSION['doctor_name'] = $doctor['fname']; // Or concat fname + lname
+            echo "<script>alert('Login successful!'); window.location.href='doctor_panel.php';</script>";
             exit();
-        } else {
+        }
+         else {
             echo "<script>alert('Invalid password.'); window.location.href='doctor_login.html';</script>";
             exit();
         }

@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+// Redirect if not logged in
+if (!isset($_SESSION['doctor_name'])) {
+    header("Location: doctor_login.html");
+    exit();
+}
+
+$doctorName = $_SESSION['doctor_name'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +25,6 @@
       background-color: #f0faff;
     }
 
-    /* Top Navigation Bar */
     .navbar {
       background-color: #2196F3;
       display: flex;
@@ -50,6 +62,10 @@
 
     .navbar ul li a:hover {
       background-color: #1976D2;
+    }
+
+    .navbar ul li a.logout:hover {
+      background-color: #f44336;
     }
 
     .content {
@@ -170,11 +186,11 @@
 
   <!-- Navigation -->
   <nav class="navbar">
-    <h2>Doctor Panel</h2>
+    <h2>Welcome, <?php echo htmlspecialchars($doctorName); ?></h2>
     <ul>
       <li><a href="#appointments">Appointments</a></li>
       <li><a href="#profile">Profile</a></li>
-      <li><a href="#logout">Logout</a></li>
+      <li><a href="#" class="logout" onclick="confirmLogout()">Logout</a></li>
     </ul>
   </nav>
 
@@ -229,7 +245,14 @@
     </section>
   
   </main>
-  
+
+  <script>
+    function confirmLogout() {
+      if (confirm("Are you sure you want to log out?")) {
+        window.location.href = "logout.php";
+      }
+    }
+  </script>
 
 </body>
 </html>
