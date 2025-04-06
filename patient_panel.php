@@ -34,7 +34,6 @@
             background-color: #f4fef4;
         }
 
-        /* Top Navigation Bar */
         .navbar {
             background-color: #4CAF50;
             overflow: hidden;
@@ -73,7 +72,36 @@
             background-color: #45a049;
         }
 
-        /* Main Content */
+        .navbar ul li a#logout-link:hover {
+            background-color: red;
+            color: white;
+        }
+
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.85);
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+        }
+
         .content {
             padding: 30px;
             margin-top: 20px;
@@ -125,7 +153,6 @@
             margin-bottom: 10px;
         }
 
-        /* Custom styles for the time input dropdown */
         select {
             font-size: 16px;
             padding: 10px;
@@ -135,18 +162,13 @@
         }
 
         select#time {
-            padding: 8px; /* Adjust padding for a better look */
+            padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             text-align: center;
-            z-index: 10; /* Ensure dropdown appears above other elements */
-            max-height: 200px; /* Limit height to ensure it doesn’t overflow the page */
-            overflow-y: auto; /* Allow scrolling if the dropdown exceeds max height */
-        }
-
-        .navbar ul li a#logout-link:hover {
-            background-color: red;
-            color: white;
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -160,9 +182,14 @@
             <li><a href="#book-appointment">Book Appointment</a></li>
             <li><a href="#profile">Profile</a></li>
             <li><a href="#" id="logout-link">Logout</a></li>
-
         </ul>
     </nav>
+
+    <!-- Image Banner -->
+    <div class="banner">
+        <img src="Hosp_pic2.jpg" alt="Serenity Hospital">
+        <div class="banner-text">Welcome to Serenity Hospital</div>
+    </div>
 
     <!-- Main Content -->
     <main class="content">
@@ -185,13 +212,13 @@
             </section>
               
         
-            <!-- Notifications (Hidden by Default) -->
+            <!-- Notifications -->
             <div id="notifications" class="notifications hidden">
                 <h3>🔔 Notifications</h3>
                 <p>No new notifications.</p>
             </div>
 
-            <!-- Upcoming Appointments (Hidden by Default) -->
+            <!-- Upcoming Appointments -->
             <div id="upcoming-appointments" class="upcoming-appointments hidden">
                 <h3>📅 Upcoming Appointment</h3>
                 <p><strong>Doctor:</strong> Dr. Smith (General Physician)</p>
@@ -199,7 +226,7 @@
                 <p><strong>Time:</strong> 10:00 AM</p>
             </div>
 
-            <!-- Recent Activity (Hidden by Default) -->
+            <!-- Recent Activity -->
             <div id="recent-activity" class="recent-activity hidden">
                 <h3>📌 Recent Activity</h3>
                 <ul>
@@ -251,19 +278,14 @@
                 <button type="submit">Book Now</button>
             </form>
         </section>
-
     </main>
 
-    <!-- JavaScript for Toggle Functionality -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         function toggleVisibility(id) {
             var section = document.getElementById(id);
-            if (section.classList.contains("hidden")) {
-                section.classList.remove("hidden");
-            } else {
-                section.classList.add("hidden");
-            }
+            section.classList.toggle("hidden");
         }
 
         function updateDoctors() {
@@ -273,7 +295,7 @@
             fetch("get_doctors.php?specialty=" + encodeURIComponent(department))
                 .then(response => response.json())
                 .then(data => {
-                    doctorSelect.innerHTML = ""; // Clear previous options
+                    doctorSelect.innerHTML = "";
                     data.forEach(doctor => {
                         var option = document.createElement("option");
                         option.value = doctor;
@@ -286,10 +308,9 @@
                 });
         }
 
-        // Initialize Flatpickr for the date input
         flatpickr("#date", {
-            minDate: "today",  // Disable past dates
-            dateFormat: "Y-m-d",  // Format for the date
+            minDate: "today",
+            dateFormat: "Y-m-d",
         });
 
         document.getElementById("logout-link").addEventListener("click", function(e) {
@@ -302,3 +323,4 @@
 
 </body>
 </html>
+
