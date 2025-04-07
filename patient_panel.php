@@ -192,6 +192,17 @@
     </div>
 
     <!-- Main Content -->
+    <?php
+        if (isset($_SESSION['success'])) {
+            echo '<div class="notifications">' . $_SESSION['success'] . '</div>';
+            unset($_SESSION['success']);
+        }
+        if (isset($_SESSION['error'])) {
+            echo '<div class="notifications" style="border-left: 5px solid red; background-color: #fce4e4;">' . $_SESSION['error'] . '</div>';
+            unset($_SESSION['error']);
+        }
+    ?>
+
     <main class="content">
         <!-- Dashboard -->
         <section id="dashboard">
@@ -220,11 +231,27 @@
 
             <!-- Upcoming Appointments -->
             <div id="upcoming-appointments" class="upcoming-appointments hidden">
-                <h3>📅 Upcoming Appointment</h3>
-                <p><strong>Doctor:</strong> Dr. Smith (General Physician)</p>
-                <p><strong>Date:</strong> March 25, 2025</p>
-                <p><strong>Time:</strong> 10:00 AM</p>
-            </div>
+            <h3>📅 Upcoming Appointments</h3>
+            <?php
+                $stmt = $conn->prepare("SELECT doctor_name, department, appointment_time, appointment_date FROM appointments WHERE patient_id = ? AND appointment_date >= CURDATE()");
+                $stmt->bind_param("i", $patient_id);                
+                $stmt->execute();
+                $result = $stmt->get_result();
+                
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<p><strong>Doctor:</strong> Dr. " . htmlspecialchars($row['doctor_name']) . "<br>";
+                        echo "<strong>Specialty:</strong> " . htmlspecialchars($row['department']) . "<br>";
+                        echo "<strong>Date:</strong> " . htmlspecialchars($row['appointment_date']) . "<br>";
+                        echo "<strong>Time:</strong> " . htmlspecialchars($row['appointment_time']) . "</p><hr>";
+                    }
+                } else {
+                    echo "<p>No upcoming appointments.</p>";
+                }
+                $stmt->close();
+            ?>
+        </div>
+
 
             <!-- Recent Activity -->
             <div id="recent-activity" class="recent-activity hidden">
@@ -240,9 +267,9 @@
         <!-- Book Appointment Section -->
         <section id="book-appointment">
             <h2>Book an Appointment</h2>
-            <form>
+            <form method="POST" action="book_appointment.php">
                 <label for="department">Department:</label>
-                <select id="department" onchange="updateDoctors()">
+                <select id="department" name="department" onchange="updateDoctors()" required>
                     <option value="" disabled selected>Select a specialty</option>
                     <option value="General Physician">General Physician</option>
                     <option value="Pediatrician">Pediatrician</option>
@@ -252,16 +279,16 @@
                 </select>
 
                 <label for="doctor">Doctor:</label>
-                <select id="doctor">
+                <select id="doctor" name="doctor" required>
                     <option value="" disabled selected>Select Doctor</option>
                     <!-- Doctors will be populated based on department selection -->
                 </select>
 
                 <label for="date">Date:</label>
-                <input type="text" id="date" required>
+                <input type="text" id="date" name="date" required>
 
                 <label for="time">Time:</label>
-                <select id="time" required>
+                <select id="time" name="time" required>
                     <option value="07:00">07:00 AM</option>
                     <option value="08:00">08:00 AM</option>
                     <option value="09:00">09:00 AM</option>
@@ -320,6 +347,35 @@
                 window.location.href = "patient_logout.php";
             }
         });
+
+        document.getElementById("doctor").addEventListener("change", updateAvailableTimes);
+        document.getElementById("date").addEventListener("change", updateAvailableTimes);
+
+        function updateAvailableTimes() {
+            const doctor = document.getElementById("doctor").value;
+            const date = document.getElementById("date").value;
+
+            if (!doctor || !date) return;
+
+            fetch(`get_booked_times.php?doctor=${encodeURIComponent(doctor)}&date=${encodeURIComponent(date)}`)
+                .then(response => response.json())
+                .then(bookedTimes => {
+                    const timeSelect = document.getElementById("time");
+                    Array.from(timeSelect.options).forEach(option => {
+                        if (bookedTimes.includes(option.value)) {
+                            option.disabled = true;
+                            option.style.color = "gray";
+                        } else {
+                            option.disabled = false;
+                            option.style.color = "black";
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching times:", error);
+                });
+        }
+
     </script>
 
 </body>
