@@ -187,7 +187,7 @@
 
     <!-- Image Banner -->
     <div class="banner">
-        <img src="Hosp_pic2.jpg" alt="Serenity Hospital">
+        <img src="images/Hosp_pic2.jpg" alt="Serenity Hospital">
         <div class="banner-text">Welcome to Serenity Hospital</div>
     </div>
 
@@ -253,6 +253,7 @@
 
                 <label for="doctor">Doctor:</label>
                 <select id="doctor">
+                    <option value="" disabled selected>Select Doctor</option>
                     <!-- Doctors will be populated based on department selection -->
                 </select>
 
