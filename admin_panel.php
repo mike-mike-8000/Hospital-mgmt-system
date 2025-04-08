@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['admin_username'])) {
+    header("Location: admin_login.html");
+    exit();
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +84,7 @@
     <h1>Admin Panel</h1>
     <div>
       <a href="#">Dashboard</a>
-      <a href="#">Logout</a>
+      <a href="adm_logout.php">Logout</a>
     </div>
   </nav>
 
