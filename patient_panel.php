@@ -323,18 +323,26 @@
             fetch("get_doctors.php?specialty=" + encodeURIComponent(department))
                 .then(response => response.json())
                 .then(data => {
-                    doctorSelect.innerHTML = "";
+                    doctorSelect.innerHTML = "<option value='' disabled selected>Select Doctor</option>";
                     data.forEach(doctor => {
                         var option = document.createElement("option");
                         option.value = doctor;
                         option.textContent = doctor;
                         doctorSelect.appendChild(option);
                     });
+
+                    // Trigger time update when first doctor loads
+                    doctorSelect.addEventListener("change", updateAvailableTimes);
+                    if (doctorSelect.options.length > 1) {
+                        doctorSelect.selectedIndex = 1; // auto-select first real doctor
+                        updateAvailableTimes(); // trigger time update if date is already picked
+                    }
                 })
                 .catch(error => {
                     console.error("Error fetching doctors:", error);
                 });
         }
+
 
         flatpickr("#date", {
             minDate: "today",
@@ -349,8 +357,12 @@
         });
 
         document.getElementById("doctor").addEventListener("change", updateAvailableTimes);
+        if (document.getElementById("doctor").value && document.getElementById("date").value) {
+        updateAvailableTimes();
+        }
         document.getElementById("date").addEventListener("change", updateAvailableTimes);
-
+        
+        // Update available times when the page loads
         function updateAvailableTimes() {
             const doctor = document.getElementById("doctor").value;
             const date = document.getElementById("date").value;

@@ -7,9 +7,40 @@ if (!isset($_SESSION['doctor_name'])) {
     exit();
 }
 
-$doctorName = $_SESSION['doctor_name'];
-?>
+include 'db.php'; // Ensure database connection is included
 
+$doctorName = $_SESSION['doctor_name'];
+
+// Fetch doctor details from DB
+$stmt = $conn->prepare("SELECT * FROM doctors WHERE CONCAT(fname, ' ', lname) = ?");
+$stmt->bind_param("s", $doctorName);
+$stmt->execute();
+$docResult = $stmt->get_result();
+$doctorInfo = $docResult->fetch_assoc();
+
+
+// Fetch new (Pending) appointments
+$stmt = $conn->prepare("SELECT * FROM appointments WHERE doctor_name = ? AND status = 'Pending' ORDER BY appointment_date ASC");
+$stmt->bind_param("s", $doctorName);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$newAppointments = [];
+while ($row = $result->fetch_assoc()) {
+    $newAppointments[] = $row;
+}
+
+// Fetch all appointments for this doctor
+$stmtAll = $conn->prepare("SELECT * FROM appointments WHERE doctor_name = ? ORDER BY appointment_date DESC, appointment_time DESC");
+$stmtAll->bind_param("s", $doctorName);
+$stmtAll->execute();
+$resultAll = $stmtAll->get_result();
+
+$allAppointments = [];
+while ($row = $resultAll->fetch_assoc()) {
+    $allAppointments[] = $row;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,7 +162,6 @@ $doctorName = $_SESSION['doctor_name'];
       margin-bottom: 5px;
     }
 
-    /* Remove Slot Button */
     .remove-slot {
       background-color: #f44336;
       color: white;
@@ -147,7 +177,6 @@ $doctorName = $_SESSION['doctor_name'];
       background-color: #d32f2f;
     }
 
-    /* Responsive Design */
     @media (max-width: 768px) {
       .navbar {
         flex-direction: column;
@@ -188,7 +217,8 @@ $doctorName = $_SESSION['doctor_name'];
   <nav class="navbar">
     <h2>Welcome, <?php echo htmlspecialchars($doctorName); ?></h2>
     <ul>
-      <li><a href="#appointments">Appointments</a></li>
+      <li><a href="#notifications">Appointments</a></li>
+      <li><a href="#view-appointments">View All</a></li>
       <li><a href="#profile">Profile</a></li>
       <li><a href="#" class="logout" onclick="confirmLogout()">Logout</a></li>
     </ul>
@@ -198,52 +228,72 @@ $doctorName = $_SESSION['doctor_name'];
 
     <!-- Notifications -->
     <section id="notifications">
-      <h2>🔔 Notifications</h2>
-      <div class="card">
-        <p><strong>New Appointment:</strong> You have a new appointment scheduled with Samir Khan on March 24, 2025 at 11:30 AM.</p>
-      </div>
-      <div class="card">
-        <p><strong>Upcoming Appointment Reminder:</strong> Appointment with Jordan Lee is tomorrow at 10:00 AM.</p>
-      </div>
+      <h2>🔔 New Appointments</h2>
+      <?php if (count($newAppointments) > 0): ?>
+        <?php foreach ($newAppointments as $appointment): ?>
+          <div class="card">
+            <p><strong>New Appointment:</strong> <?php echo htmlspecialchars($appointment['patient_name']); ?></p>
+            <p><strong>Date:</strong> <?php echo htmlspecialchars($appointment['appointment_date']); ?></p>
+            <p><strong>Time:</strong> <?php echo htmlspecialchars($appointment['appointment_time']); ?></p>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <div class="card">
+          <p>No new appointments.</p>
+        </div>
+      <?php endif; ?>
     </section>
-  
-    <!-- View Appointments -->
+
+    <!-- View All Appointments -->
     <section id="view-appointments">
-      <h2>📅 View Appointments</h2>
-      <div class="card">
-        <p><strong>Patient:</strong> Jordan Lee</p>
-        <p><strong>Date:</strong> March 26, 2025</p>
-        <p><strong>Time:</strong> 10:00 AM</p>
-        <p><strong>Reason:</strong> Chest Pain Consultation</p>
-      </div>
-      <div class="card">
-        <p><strong>Patient:</strong> Samir Khan</p>
-        <p><strong>Date:</strong> March 24, 2025</p>
-        <p><strong>Time:</strong> 11:30 AM</p>
-        <p><strong>Reason:</strong> Blood Pressure Follow-up</p>
-      </div>
+      <h2>📅 View All Appointments</h2>
+      <?php if (count($allAppointments) > 0): ?>
+        <?php foreach ($allAppointments as $app): ?>
+          <div class="card">
+            <p><strong>Patient:</strong> <?= htmlspecialchars($app['patient_name']); ?></p>
+            <p><strong>Date:</strong> <?= htmlspecialchars($app['appointment_date']); ?></p>
+            <p><strong>Time:</strong> <?= htmlspecialchars($app['appointment_time']); ?></p>
+            <p><strong>Status:</strong> <?= htmlspecialchars($app['status']); ?></p>
+            <p><strong>Created At:</strong> <?= htmlspecialchars($app['created_at']); ?></p>
+            
+            <!-- Action buttons -->
+            <form action="edit_appointment.php" method="POST" style="display: inline;">
+              <input type="hidden" name="id" value="<?= $app['id']; ?>">
+              <button type="submit">Edit</button>
+            </form>
+
+            <form action="delete_appointment.php" method="POST" style="display: inline;" onsubmit="return confirm('Delete this appointment?');">
+              <input type="hidden" name="id" value="<?= $app['id']; ?>">
+              <button type="submit" style="background-color:#f44336;color:white;">Delete</button>
+            </form>
+          </div>
+        <?php endforeach; ?>
+
+      <?php else: ?>
+        <div class="card">
+          <p>No appointments found.</p>
+        </div>
+      <?php endif; ?>
     </section>
-  
-    <!-- Modify Appointments -->
-    <section id="modify-appointments">
-      <h2>✏️ Modify Appointment</h2>
-      <form>
-        <label for="appointment-id">Select Appointment:</label>
-        <select id="appointment-id" name="appointment-id">
-          <option value="appt1">Jordan Lee - March 26, 2025 @ 10:00 AM</option>
-          <option value="appt2">Samir Khan - March 24, 2025 @ 11:30 AM</option>
-        </select>
-  
-        <label for="new-date">New Date:</label>
-        <input type="date" id="new-date" name="new-date" />
-  
-        <label for="new-time">New Time:</label>
-        <input type="time" id="new-time" name="new-time" />
-  
-        <button type="submit">Update Appointment</button>
-      </form>
-    </section>
-  
+
+    <!-- Profile Section Placeholder -->
+    <section id="profile">
+      <h2>👨‍⚕️ Profile</h2>
+      <?php if ($doctorInfo): ?>
+        <div class="card">
+          <p><strong>Full Name:</strong> <?php echo htmlspecialchars($doctorInfo['fname'] . ' ' . $doctorInfo['lname']); ?></p>
+          <p><strong>Email:</strong> <?php echo htmlspecialchars($doctorInfo['email']); ?></p>
+          <p><strong>Phone:</strong> <?php echo htmlspecialchars($doctorInfo['phone']); ?></p>
+          <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($doctorInfo['dob']); ?></p>
+          <p><strong>Specialty:</strong> <?php echo htmlspecialchars($doctorInfo['specialty']); ?></p>
+          <p><strong>Gender:</strong> <?php echo htmlspecialchars($doctorInfo['gender']); ?></p>
+        </div>
+      <?php else: ?>
+        <p>Unable to fetch profile info.</p>
+      <?php endif; ?>
+  </section>
+
+
   </main>
 
   <script>

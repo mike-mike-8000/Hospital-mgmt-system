@@ -1,6 +1,7 @@
 <?php
-    include 'db.php';
+include 'db.php';
 
+if (isset($_GET['doctor']) && isset($_GET['date'])) {
     $doctor = $_GET['doctor'];
     $date = $_GET['date'];
 
@@ -13,8 +14,8 @@
     while ($row = $result->fetch_assoc()) {
         $booked_times[] = $row['appointment_time'];
     }
-    $stmt->close();
-    $conn->close();
 
     echo json_encode($booked_times);
+}
 ?>
+

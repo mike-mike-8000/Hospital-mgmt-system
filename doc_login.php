@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify password
         if (password_verify($password, $doctor['password'])) {
             session_start();
-            $_SESSION['doctor_name'] = $doctor['fname']; // Or concat fname + lname
+            $_SESSION['doctor_name'] = $doctor['fname'] . " " . $doctor['lname'];
             echo "<script>alert('Login successful!'); window.location.href='doctor_panel.php';</script>";
             exit();
         }
