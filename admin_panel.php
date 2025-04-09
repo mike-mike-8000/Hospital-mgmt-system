@@ -1,10 +1,19 @@
 <?php
 session_start();
+require_once 'db.php';
+
 if (!isset($_SESSION['admin_username'])) {
     header("Location: admin_login.html");
     exit();
 }
+
+// Fetch pending doctors
+$pendingDoctors = $conn->query("SELECT * FROM doctors WHERE is_approved = 0");
+
+// Fetch approved doctors
+$approvedDoctors = $conn->query("SELECT * FROM doctors WHERE is_approved = 1");
 ?>
+
 
 
 <!DOCTYPE html>
@@ -92,85 +101,61 @@ if (!isset($_SESSION['admin_username'])) {
 
     <h2>Pending Doctor Approvals</h2>
     <table>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Specialization</th>
-        <th>Actions</th>
-      </tr>
-      <tr>
-        <td>Dr. John Doe</td>
-        <td>john@serenityhospital.com</td>
-        <td>Cardiologist</td>
-        <td>
-          <button>Approve</button>
-          <button class="reject">Reject</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Dr. Fatima Yusuf</td>
-        <td>fatima@serenityhospital.com</td>
-        <td>Neurologist</td>
-        <td>
-          <button>Approve</button>
-          <button class="reject">Reject</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Dr. Kelvin Mwangi</td>
-        <td>kelvin@serenityhospital.com</td>
-        <td>Pediatrician</td>
-        <td>
-          <button>Approve</button>
-          <button class="reject">Reject</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Dr. Adaeze Obi</td>
-        <td>adaeze@serenityhospital.com</td>
-        <td>Radiologist</td>
-        <td>
-          <button>Approve</button>
-          <button class="reject">Reject</button>
-        </td>
-      </tr>
+        <?php while ($row = $pendingDoctors->fetch_assoc()): ?>
+    <tr>
+      <td>Dr. <?= htmlspecialchars($row['fname'] . ' ' . $row['lname']) ?></td>
+      <td><?= htmlspecialchars($row['email']) ?></td>
+      <td><?= htmlspecialchars($row['specialty']) ?></td>
+      <td>
+        <form action="process_doctor.php" method="post" style="display:inline;">
+          <input type="hidden" name="doctor_id" value="<?= $row['id'] ?>">
+          <input type="hidden" name="action" value="approve">
+          <button type="submit">Approve</button>
+        </form>
+        <form action="process_doctor.php" method="post" style="display:inline;">
+          <input type="hidden" name="doctor_id" value="<?= $row['id'] ?>">
+          <input type="hidden" name="action" value="reject">
+          <button type="submit" class="reject">Reject</button>
+        </form>
+      </td>
+    </tr>
+    <?php endwhile; ?>
     </table>
+
 
     <h2>Approved Doctors</h2>
     <table>
+      <?php while ($row = $approvedDoctors->fetch_assoc()): ?>
       <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Specialization</th>
-        <th>Status</th>
-      </tr>
-      <tr>
-        <td>Dr. Jane Smith</td>
-        <td>jane@serenityhospital.com</td>
-        <td>Dermatologist</td>
+        <td>Dr. <?= htmlspecialchars($row['fname'] . ' ' . $row['lname']) ?></td>
+        <td><?= htmlspecialchars($row['email']) ?></td>
+        <td><?= htmlspecialchars($row['specialty']) ?></td>
         <td>Approved</td>
       </tr>
-      <tr>
-        <td>Dr. Marcus Bello</td>
-        <td>marcus@serenityhospital.com</td>
-        <td>Orthopedic Surgeon</td>
-        <td>Approved</td>
-      </tr>
-      <tr>
-        <td>Dr. Linda Choi</td>
-        <td>linda@serenityhospital.com</td>
-        <td>Ophthalmologist</td>
-        <td>Approved</td>
-      </tr>
-      <tr>
-        <td>Dr. Nneka Ume</td>
-        <td>nneka@serenityhospital.com</td>
-        <td>Oncologist</td>
-        <td>Approved</td>
-      </tr>
+      <?php endwhile; ?>
     </table>
 
   </div>
+
+  <script>
+  // Approve confirmation
+    document.querySelectorAll("form[action='process_doctor.php']").forEach(form => {
+      form.addEventListener("submit", function (e) {
+        const actionType = this.querySelector("input[name='action']").value;
+        let message = "";
+
+        if (actionType === "approve") {
+          message = "Are you sure you want to approve this doctor?";
+        } else if (actionType === "reject") {
+          message = "Are you sure you want to reject and remove this doctor?";
+        }
+
+        if (!confirm(message)) {
+          e.preventDefault(); // Stop the form submission
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>

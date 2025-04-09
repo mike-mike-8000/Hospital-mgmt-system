@@ -14,14 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows === 1) {
         $doctor = $result->fetch_assoc();
+
+        // Check approval status before verifying password
+        if ($doctor['is_approved'] == 0) {
+            echo "<script>alert('Your account is still pending approval from the admin.'); window.location.href='doctor_login.html';</script>";
+            exit();
+        } elseif ($doctor['is_approved'] == -1) {
+            echo "<script>alert('Your registration request was rejected by the admin.'); window.location.href='doctor_login.html';</script>";
+            exit();
+        }
+
         // Verify password
         if (password_verify($password, $doctor['password'])) {
             session_start();
             $_SESSION['doctor_name'] = $doctor['fname'] . " " . $doctor['lname'];
             echo "<script>alert('Login successful!'); window.location.href='doctor_panel.php';</script>";
             exit();
-        }
-         else {
+        } else {
             echo "<script>alert('Invalid password.'); window.location.href='doctor_login.html';</script>";
             exit();
         }
@@ -31,3 +40,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
