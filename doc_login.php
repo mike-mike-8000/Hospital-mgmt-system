@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<script>alert('Your account is still pending approval from the admin.'); window.location.href='doctor_login.html';</script>";
             exit();
         } elseif ($doctor['is_approved'] == -1) {
-            echo "<script>alert('Your registration request was rejected by the admin.'); window.location.href='doctor_login.html';</script>";
+            echo "<script>alert('Your registration has been rejected or your Account has been disabled. Please see the admin.'); window.location.href='doctor_login.html';</script>";
             exit();
         }
 
