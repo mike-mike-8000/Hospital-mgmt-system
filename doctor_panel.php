@@ -225,6 +225,23 @@ while ($row = $resultAll->fetch_assoc()) {
   </nav>
 
   <main class="content">
+  
+   <!-- Profile Section Placeholder -->
+   <section id="profile">
+      <h2>👨‍⚕️ Profile</h2>
+      <?php if ($doctorInfo): ?>
+        <div class="card">
+          <p><strong>Full Name:</strong> <?php echo htmlspecialchars($doctorInfo['fname'] . ' ' . $doctorInfo['lname']); ?></p>
+          <p><strong>Email:</strong> <?php echo htmlspecialchars($doctorInfo['email']); ?></p>
+          <p><strong>Phone:</strong> <?php echo htmlspecialchars($doctorInfo['phone']); ?></p>
+          <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($doctorInfo['dob']); ?></p>
+          <p><strong>Specialty:</strong> <?php echo htmlspecialchars($doctorInfo['specialty']); ?></p>
+          <p><strong>Gender:</strong> <?php echo htmlspecialchars($doctorInfo['gender']); ?></p>
+        </div>
+      <?php else: ?>
+        <p>Unable to fetch profile info.</p>
+      <?php endif; ?>
+    </section>
 
     <!-- Notifications -->
     <section id="notifications">
@@ -276,22 +293,6 @@ while ($row = $resultAll->fetch_assoc()) {
       <?php endif; ?>
     </section>
 
-    <!-- Profile Section Placeholder -->
-    <section id="profile">
-      <h2>👨‍⚕️ Profile</h2>
-      <?php if ($doctorInfo): ?>
-        <div class="card">
-          <p><strong>Full Name:</strong> <?php echo htmlspecialchars($doctorInfo['fname'] . ' ' . $doctorInfo['lname']); ?></p>
-          <p><strong>Email:</strong> <?php echo htmlspecialchars($doctorInfo['email']); ?></p>
-          <p><strong>Phone:</strong> <?php echo htmlspecialchars($doctorInfo['phone']); ?></p>
-          <p><strong>Date of Birth:</strong> <?php echo htmlspecialchars($doctorInfo['dob']); ?></p>
-          <p><strong>Specialty:</strong> <?php echo htmlspecialchars($doctorInfo['specialty']); ?></p>
-          <p><strong>Gender:</strong> <?php echo htmlspecialchars($doctorInfo['gender']); ?></p>
-        </div>
-      <?php else: ?>
-        <p>Unable to fetch profile info.</p>
-      <?php endif; ?>
-  </section>
 
 
   </main>

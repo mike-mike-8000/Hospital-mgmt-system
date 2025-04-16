@@ -212,7 +212,6 @@
             <!-- Toggle Buttons -->
             <button class="toggle-btn" onclick="toggleVisibility('notifications')">🔔 View Notifications</button>
             <button class="toggle-btn" onclick="toggleVisibility('upcoming-appointments')">📅 View Upcoming Appointments</button>
-            <button class="toggle-btn" onclick="toggleVisibility('recent-activity')">📌 View Recent Activity</button>
             
             <!-- Profile Section -->
             <section id="profile">
@@ -253,15 +252,6 @@
         </div>
 
 
-            <!-- Recent Activity -->
-            <div id="recent-activity" class="recent-activity hidden">
-                <h3>📌 Recent Activity</h3>
-                <ul>
-                    <li>Booked an appointment with Dr. Smith on March 18, 2025.</li>
-                    <li>Updated profile information on March 17, 2025.</li>
-                    <li>Checked appointment history on March 16, 2025.</li>
-                </ul>
-            </div>
         </section>
 
         <!-- Book Appointment Section -->
