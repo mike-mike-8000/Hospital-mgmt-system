@@ -108,6 +108,7 @@ $disabledDoctors = $conn->query($disabledQuery);
       }
     }
   </script>
+  <link rel="icon" href="images/my_favicon.jpeg" type="image/x-icon">
 </head>
 <body>
 

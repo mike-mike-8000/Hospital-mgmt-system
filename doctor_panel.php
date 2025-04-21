@@ -48,6 +48,7 @@ while ($row = $resultAll->fetch_assoc()) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Doctor Panel - Hospital Booking</title>
+  <link rel="icon" href="images/my_favicon.jpeg" type="image/x-icon">
   <style>
     body {
       font-family: Arial, sans-serif;

@@ -26,6 +26,7 @@
     <title>Patient Panel - Hospital Booking</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="icon" href="images/my_favicon.jpeg" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;

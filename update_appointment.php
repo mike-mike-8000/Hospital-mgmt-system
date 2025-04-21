@@ -11,7 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sssi", $date, $time, $status, $id);
 
     if ($stmt->execute()) {
-        header("Location: doctor_panel.php");
+        echo "<script>
+            alert('Appointment updated successfully.');
+            window.location.href = 'doctor_panel.php';
+        </script>";
         exit();
     } else {
         echo "Failed to update.";
@@ -19,3 +22,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo "Invalid request.";
 }
+?>
