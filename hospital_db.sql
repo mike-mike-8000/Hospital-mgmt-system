@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 11:41 AM
+-- Generation Time: Apr 21, 2025 at 12:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -64,9 +64,13 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`id`, `patient_id`, `patient_name`, `doctor_name`, `department`, `appointment_date`, `appointment_time`, `status`, `created_at`, `notification`) VALUES
-(1, NULL, 'Charlie Rackel', 'Charles Rubia', 'General Physician', '2025-04-08', '08:00:00', '', '2025-04-07 12:19:24', NULL),
 (2, 3, 'Charlie Rackel', 'David Kim', 'Dentist', '2025-04-09', '15:00:00', '', '2025-04-07 12:28:23', NULL),
-(3, 1, 'Ryan Stevenson', 'Charles Rubia', 'General Physician', '2025-04-09', '11:00:00', '', '2025-04-08 18:47:45', 'Your appointment has been modified. Please check the details.');
+(3, 1, 'Ryan Stevenson', 'Charles Rubia', 'General Physician', '2025-04-09', '11:00:00', '', '2025-04-08 18:47:45', 'Your appointment has been modified. Please check the details.'),
+(4, 4, 'Miguel Oluoch', 'Fatima Noor', 'Dentist', '2025-04-17', '11:00:00', '', '2025-04-15 20:35:08', NULL),
+(5, 1, 'Ryan Stevenson', 'Charles Rubia', 'General Physician', '2025-04-18', '10:00:00', '', '2025-04-15 21:13:29', NULL),
+(6, 1, 'Ryan Stevenson', 'Charles Rubia', 'General Physician', '2025-04-19', '12:00:00', '', '2025-04-15 21:15:08', NULL),
+(7, 5, 'Alicia Nduta', 'Fatima Noor', 'Dentist', '2025-04-25', '09:00:00', '', '2025-04-16 12:25:27', NULL),
+(8, 7, 'Ray Dusk', 'Charles Rubia', 'General Physician', '2025-04-18', '12:00:00', '', '2025-04-16 12:49:57', NULL);
 
 -- --------------------------------------------------------
 
@@ -105,11 +109,35 @@ INSERT INTO `doctors` (`id`, `fname`, `lname`, `email`, `phone`, `dob`, `special
 (11, 'Ahmed', 'Malik', 'ahmed.malik@hotmail.com', '5551230022', '1983-12-05', 'Cardiologist', 'male', '$2y$10$CCp0u2cKuHqPhqYwrSl.zO.B3nX98K7VDJ1/OpFPKq8f8Q6MEX4CO', 1),
 (12, 'Waithera', 'Muthoni', 'waithera.muthoni@gmail.com', '5551230030', '1991-08-11', 'Dentist', 'female', '$2y$10$1dYHhlmwr6i8dACf1vHrVOE6DTRDdhQoMHiePJvNKq8SCeZ4D3Y9O', 1),
 (13, 'David', 'Kim', 'david.kim@hotmail.com', '5551230031', '1986-10-25', 'Dentist', 'male', '$2y$10$CCp0u2cKuHqPhqYwrSl.zO.B3nX98K7VDJ1/OpFPKq8f8Q6MEX4CO', 1),
-(14, 'Fatima', 'Noor', 'fatima.noor@hotmail.com', '5551230032', '1993-04-19', 'Dentist', 'female', '$2y$10$1dYHhlmwr6i8dACf1vHrVOE6DTRDdhQoMHiePJvNKq8SCeZ4D3Y9O', 1),
+(14, 'Fatima', 'Noor', 'fatima.noor@hotmail.com', '5551230032', '1993-04-19', 'Dentist', 'female', '$2y$10$PZB7tAHDcNvjpBU71kYtje60Hn/xECZiTls0jdgbwsI3Xdu6.VYHK', 1),
 (15, 'Anika', 'Rao', 'anika.rao@gmail.com', '5551230040', '1984-09-13', 'Neurologist', 'female', '$2y$10$1dYHhlmwr6i8dACf1vHrVOE6DTRDdhQoMHiePJvNKq8SCeZ4D3Y9O', 1),
 (16, 'James', 'Mutemi', 'james.mutemi@hotmail.com', '5551230041', '1982-03-02', 'Neurologist', 'male', '$2y$10$CCp0u2cKuHqPhqYwrSl.zO.B3nX98K7VDJ1/OpFPKq8f8Q6MEX4CO', 1),
 (17, 'Amira', 'Patel', 'amira.patel@gmail.com', '5551230042', '1990-12-28', 'Neurologist', 'female', '$2y$10$1dYHhlmwr6i8dACf1vHrVOE6DTRDdhQoMHiePJvNKq8SCeZ4D3Y9O', 1),
-(18, 'Michael', 'Otieno', 'motieno@gmail.com', '0789223004', '1991-04-19', 'Dentist', 'male', '$2y$10$0Y.5KX4GRphbQRAGE8GUqO58KJ6rd1VVvuPQugmOMMw.zXvIbpi4a', 1);
+(18, 'Michael', 'Otieno', 'motieno@gmail.com', '0789223004', '1991-04-19', 'Dentist', 'male', '$2y$10$0Y.5KX4GRphbQRAGE8GUqO58KJ6rd1VVvuPQugmOMMw.zXvIbpi4a', 1),
+(19, 'Raymond', 'Turungi', 'raytr@gmail.com', '0723313001', '1984-04-01', 'General Physician', 'male', '$2y$10$liMZbCyCPC1mSjM.bnfgIeYuIDBiAPkqcFsr7Hok6.K4z1sCBaOXS', 1),
+(20, 'Alicia', 'Waithera', 'awaithera@gmail.com', '07993834965', '2004-09-09', 'Pediatrician', 'female', '$2y$10$4Up4tdXX61VVhtZOhhzXdO/xiWxWj9xc4X2YoKF4GzZpb0fKFQOCa', 1),
+(21, 'Miguel', 'Dusk', 'md@gmail.com', '0987834854', '1990-09-08', 'General Physician', 'male', '$2y$10$BEf8QAQC6QDAXIioNMIpteqGt8W5S24QgVw86SbDqK47AkZ0FF3Ke', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `patient_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `patient_id`, `message`, `is_read`, `created_at`) VALUES
+(1, 1, 'Your appointment with Dr. Charles Rubia has been updated: Time changed from 10:00:00 to 11:00; Status changed from  to Pending.', 0, '2025-04-16 06:59:01');
 
 -- --------------------------------------------------------
 
@@ -134,7 +162,10 @@ CREATE TABLE `patients` (
 INSERT INTO `patients` (`id`, `first_name`, `last_name`, `email`, `phone`, `gender`, `password`) VALUES
 (1, 'Ryan', 'Stevenson', 'rysty@gmail.com', '0777890110', 'male', '$2y$10$pQONRt29KWi5xbB80ZVTtOO8juSBYQaC44J1DM/5USrhcWB9LzG72'),
 (2, '', 'Brown', 'cb@gmail.com', '04354325524', 'female', '$2y$10$vvap1wUCzv4mhQdEuhUHYuAdLkVvkrfxmbMZrxHeeffP7A6qTI5Bq'),
-(3, 'Charlie', 'Rackel', 'rara@r.com', '0039204540', 'female', '$2y$10$sU6ZiJ9X0QG9RMbjbrLlze.1e5YivxikNn85h16My7LMyg6KnDrde');
+(3, 'Charlie', 'Rackel', 'rara@r.com', '0039204540', 'female', '$2y$10$sU6ZiJ9X0QG9RMbjbrLlze.1e5YivxikNn85h16My7LMyg6KnDrde'),
+(4, 'Miguel', 'Oluoch', 'mg@gmail.com', '0789023651', 'male', '$2y$10$UjmQGvUzf32CD6CLkm2ToeJO8SvkIbf0QTrylMTAkXqZHOwViOrEK'),
+(5, 'Alicia', 'Nduta', 'alicianduta278@gmail.com', '0710517073', 'female', '$2y$10$cLjXx8Hlg.VNS45PbfQ2zuoLBg.OlvYjO9pD/EG9aIYRVrcm/uqUW'),
+(7, 'Ray', 'Dusk', 'rd@gmail.com', '09833454354', 'male', '$2y$10$5V0cpFGXLKhCiK7OxrDrWeN.RPPNDEbnAxUG77tftGoDHNGFsqDX2');
 
 --
 -- Indexes for dumped tables
@@ -161,6 +192,12 @@ ALTER TABLE `doctors`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `patients`
 --
 ALTER TABLE `patients`
@@ -181,19 +218,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `doctors`
 --
 ALTER TABLE `doctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
